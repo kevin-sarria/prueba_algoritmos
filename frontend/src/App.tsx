@@ -1,15 +1,14 @@
-import { Outlet, Link } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes";
+import { Provider } from "react-redux";
+import { store } from "./core/state/store";
 
 export default function App() {
   return (
     <div className="w-screen h-screen">
-      <nav>
-        <Link to="/login">Login</Link> |{" "}
-        <Link to="/register">Register</Link> |{" "}
-        <Link to="/dashboard">Dashboard</Link>
-      </nav>
-      <hr />
-      <Outlet />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </div>
   );
 }

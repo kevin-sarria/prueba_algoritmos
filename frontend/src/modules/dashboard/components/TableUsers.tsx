@@ -13,83 +13,19 @@ import {
   Button,
 } from "flowbite-react";
 import { formatDate } from "../../../core/utils/format-date";
-
-interface Data {
-  data: User[],
-  metadata: Metadata
-}
-
-interface Metadata {
-  page: number;
-  per_page: number;
-  total_pages: number;
-  total_items: number;
-}
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-  created_at: string;
-  updated_at: string;
-}
-
-const data: Data = {
-  data: [
-    {
-      id: "1",
-      email: "juan.perez@example.com",
-      name: "Juan Pérez",
-      role: "admin",
-      created_at: "2025-08-10T14:32:00Z",
-      updated_at: "2025-09-15T09:20:00Z"
-    },
-    {
-      id: "2",
-      email: "maria.garcia@example.com",
-      name: "María García",
-      role: "user",
-      created_at: "2025-08-12T10:45:00Z",
-      updated_at: "2025-09-18T16:05:00Z"
-    },
-    {
-      id: "3",
-      email: "carlos.mendoza@example.com",
-      name: "Carlos Mendoza",
-      role: "moderator",
-      created_at: "2025-08-14T18:15:00Z",
-      updated_at: "2025-09-20T12:10:00Z"
-    },
-    {
-      id: "4",
-      email: "laura.rojas@example.com",
-      name: "Laura Rojas",
-      role: "user",
-      created_at: "2025-08-16T08:30:00Z",
-      updated_at: "2025-09-22T11:45:00Z"
-    },
-    {
-      id: "5",
-      email: "andres.torres@example.com",
-      name: "Andrés Torres",
-      role: "user",
-      created_at: "2025-08-18T20:50:00Z",
-      updated_at: "2025-09-24T07:25:00Z"
-    }
-  ],
-  metadata: {
-    page: 1,
-    per_page: 5,
-    total_pages: 10,
-    total_items: 50
-  }
-}
+import { DeleteUserModal } from "./DeleteUserModal";
+import { users } from "../mocks/usersMock";
+import { useUsersContext } from "../context/useUsersContext";
+import { EditUserModal } from "./EditUserModal";
 
 export const TableUsers = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
+
+  const data = users;
+
+  const { modalDeleteUserOpen, openDeleteUserModal, closeDeleteUserModal, modalEditUserOpen, openEditUserModal, closeEditUserModal } = useUsersContext()
 
   // Filtrar productos
   const filteredData = useMemo(() => {
@@ -100,7 +36,6 @@ export const TableUsers = () => {
     );
   }, [search]);
 
-  // Calcular paginación
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
@@ -139,6 +74,9 @@ export const TableUsers = () => {
               <TableHeadCell>
                 <span className="sr-only">Edit</span>
               </TableHeadCell>
+              <TableHeadCell>
+                <span className="sr-only">Delete</span>
+              </TableHeadCell>
             </TableRow>
           </TableHead>
           <TableBody className="divide-y">
@@ -156,12 +94,20 @@ export const TableUsers = () => {
                 <TableCell>{formatDate(item.created_at)}</TableCell>
                 <TableCell>{formatDate(item.updated_at)}</TableCell>
                 <TableCell>
-                  <a
-                    href="#"
+                  <button
+                    onClick={openEditUserModal}
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Edit
-                  </a>
+                  </button>
+                </TableCell>
+                <TableCell>
+                  <button
+                    onClick={openDeleteUserModal}
+                    className="font-medium text-red-600 hover:underline dark:text-red-500"
+                  >
+                    Delete
+                  </button>
                 </TableCell>
               </TableRow>
             ))}
@@ -169,7 +115,9 @@ export const TableUsers = () => {
         </Table>
       </div>
 
-      {/* Paginación */}
+      <DeleteUserModal isOpen={modalDeleteUserOpen} setClose={closeDeleteUserModal} />
+      <EditUserModal isOpen={modalEditUserOpen} setClose={closeEditUserModal} />
+
       {totalPages > 1 && (
         <div className="flex justify-end">
           <Pagination
@@ -179,7 +127,6 @@ export const TableUsers = () => {
             showIcons
             previousLabel=""
             nextLabel=""
-            color="primary"
           />
         </div>
       )}
