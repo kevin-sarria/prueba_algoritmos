@@ -1,20 +1,20 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { SidebarApp } from "../components/Sidebar";
+import { NavbarApp } from "../components/Navbar";
 
 export const DashboardLayout = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/", { replace: true });
-  };
-
   return (
-    <div>
-      <nav>
-        <button onClick={handleLogout}>Cerrar sesión</button>
-      </nav>
-      <h1>Dashboard</h1>
-      <Outlet />
+    <div className="flex h-screen">
+      <SidebarApp />
+
+      {/* Main */}
+      <div className="flex-1 flex flex-col">
+        <NavbarApp />
+
+        <main className="p-6 gap-6 max-w-full max-h-full">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
