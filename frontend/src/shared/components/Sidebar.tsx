@@ -1,10 +1,12 @@
 import { Button, Drawer, DrawerHeader, DrawerItems, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from "flowbite-react"
-import { useState } from "react"
-import { HiChartPie, HiMenu, HiX } from "react-icons/hi"
+import { HiChartPie, HiX } from "react-icons/hi"
 
-export const SidebarApp = () => {
-    const [isOpen, setIsOpen] = useState(false)
+interface Props {
+  isOpen: boolean,
+  closeNavbar: () => void
+}
 
+export const SidebarApp = ({ isOpen, closeNavbar }: Props) => {
   return (
     <>
       {/* Sidebar fijo en desktop */}
@@ -20,19 +22,12 @@ export const SidebarApp = () => {
         </Sidebar>
       </aside>
 
-      {/* Botón hamburguesa en mobile */}
-      <div className="md:hidden p-2">
-        <Button color="gray" onClick={() => setIsOpen(true)}>
-          <HiMenu className="h-5 w-5" />
-        </Button>
-      </div>
-
       {/* Drawer para mobile */}
-      <Drawer open={isOpen} onClose={() => setIsOpen(false)} position="left">
+      <Drawer open={isOpen} onClose={closeNavbar} position="left">
         <DrawerHeader>
           <div className="flex items-center justify-between w-full">
             <span className="text-lg font-semibold">Menú</span>
-            <Button color="gray" size="sm" onClick={() => setIsOpen(false)}>
+            <Button color="gray" size="sm" onClick={closeNavbar}>
               <HiX className="h-5 w-5" />
             </Button>
           </div>

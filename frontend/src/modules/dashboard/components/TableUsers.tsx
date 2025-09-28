@@ -10,25 +10,81 @@ import {
   TableRow,
   TextInput,
   Pagination,
+  Button,
 } from "flowbite-react";
+import { formatDate } from "../../../core/utils/format-date";
 
-interface Product {
-  name: string;
-  color: string;
-  category: string;
-  price: string;
+interface Data {
+  data: User[],
+  metadata: Metadata
 }
 
-const data: Product[] = [
-  { name: "Apple MacBook Pro 17\"", color: "Silver", category: "Laptop", price: "$2999" },
-  { name: "Microsoft Surface Pro", color: "White", category: "Laptop PC", price: "$1999" },
-  { name: "Magic Mouse 2", color: "Black", category: "Accessories", price: "$99" },
-  { name: "Apple Watch", color: "Gray", category: "Accessories", price: "$399" },
-  { name: "iPad Pro", color: "Silver", category: "Tablet", price: "$899" },
-  { name: "Dell XPS 13", color: "Black", category: "Laptop", price: "$1499" },
-  { name: "Logitech MX Keys", color: "Black", category: "Accessories", price: "$129" },
-  { name: "Samsung Galaxy Tab", color: "White", category: "Tablet", price: "$799" },
-];
+interface Metadata {
+  page: number;
+  per_page: number;
+  total_pages: number;
+  total_items: number;
+}
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+}
+
+const data: Data = {
+  data: [
+    {
+      id: "1",
+      email: "juan.perez@example.com",
+      name: "Juan Pérez",
+      role: "admin",
+      created_at: "2025-08-10T14:32:00Z",
+      updated_at: "2025-09-15T09:20:00Z"
+    },
+    {
+      id: "2",
+      email: "maria.garcia@example.com",
+      name: "María García",
+      role: "user",
+      created_at: "2025-08-12T10:45:00Z",
+      updated_at: "2025-09-18T16:05:00Z"
+    },
+    {
+      id: "3",
+      email: "carlos.mendoza@example.com",
+      name: "Carlos Mendoza",
+      role: "moderator",
+      created_at: "2025-08-14T18:15:00Z",
+      updated_at: "2025-09-20T12:10:00Z"
+    },
+    {
+      id: "4",
+      email: "laura.rojas@example.com",
+      name: "Laura Rojas",
+      role: "user",
+      created_at: "2025-08-16T08:30:00Z",
+      updated_at: "2025-09-22T11:45:00Z"
+    },
+    {
+      id: "5",
+      email: "andres.torres@example.com",
+      name: "Andrés Torres",
+      role: "user",
+      created_at: "2025-08-18T20:50:00Z",
+      updated_at: "2025-09-24T07:25:00Z"
+    }
+  ],
+  metadata: {
+    page: 1,
+    per_page: 5,
+    total_pages: 10,
+    total_items: 50
+  }
+}
 
 export const TableUsers = () => {
   const [search, setSearch] = useState("");
@@ -37,10 +93,10 @@ export const TableUsers = () => {
 
   // Filtrar productos
   const filteredData = useMemo(() => {
-    return data.filter(
+    return data.data.filter(
       (item) =>
         item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.category.toLowerCase().includes(search.toLowerCase())
+        item.email.toLowerCase().includes(search.toLowerCase())
     );
   }, [search]);
 
@@ -50,17 +106,23 @@ export const TableUsers = () => {
   const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="space-y-4">
-      <div>
-        <TextInput
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setCurrentPage(1);
-          }}
-        />
+    <div className="space-y-4 w-full mx-auto">
+      <div className="flex gap-5 w-full justify-between">
+        <div>
+          <h2 className="font-bold text-2xl">Usuarios</h2>
+        </div>
+        <div className="flex gap-5">
+          <TextInput
+            type="text"
+            placeholder="Search user..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setCurrentPage(1);
+            }}
+          />
+          <Button>+ Add User</Button>
+        </div>
       </div>
 
       {/* Tabla */}
@@ -68,10 +130,12 @@ export const TableUsers = () => {
         <Table hoverable>
           <TableHead>
             <TableRow>
-              <TableHeadCell>Product name</TableHeadCell>
-              <TableHeadCell>Color</TableHeadCell>
-              <TableHeadCell>Category</TableHeadCell>
-              <TableHeadCell>Price</TableHeadCell>
+              <TableHeadCell>ID</TableHeadCell>
+              <TableHeadCell>Email</TableHeadCell>
+              <TableHeadCell>Name</TableHeadCell>
+              <TableHeadCell>Role</TableHeadCell>
+              <TableHeadCell>Created At</TableHeadCell>
+              <TableHeadCell>Updated At</TableHeadCell>
               <TableHeadCell>
                 <span className="sr-only">Edit</span>
               </TableHeadCell>
@@ -84,11 +148,13 @@ export const TableUsers = () => {
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {item.name}
+                  {item.id}
                 </TableCell>
-                <TableCell>{item.color}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.price}</TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.role}</TableCell>
+                <TableCell>{formatDate(item.created_at)}</TableCell>
+                <TableCell>{formatDate(item.updated_at)}</TableCell>
                 <TableCell>
                   <a
                     href="#"
@@ -113,6 +179,7 @@ export const TableUsers = () => {
             showIcons
             previousLabel=""
             nextLabel=""
+            color="primary"
           />
         </div>
       )}
