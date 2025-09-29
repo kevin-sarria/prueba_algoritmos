@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { getAllUsers } from "../services/get-users"
 import type { ErrorModel } from "../../../core/types/http.interface"
-import type { User } from "../types/user.interface"
 
 export const useUsers = () => {
 
