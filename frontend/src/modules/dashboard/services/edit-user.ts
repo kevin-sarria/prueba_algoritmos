@@ -9,14 +9,13 @@ interface Response {
 }
 
 interface Props {
-    search?: string;
-    page?: number;
-    limit?: number
+    dataInput: Partial<User>;
+    userId: string;
 }
 
-export const getAllUsers = async ({ search = '', page, limit }: Props): Promise<Response> => {
+export const editUser = async ({ userId, dataInput }: Props): Promise<Response> => {
     try {
-        const resp = await httpClient.get<ApiResponseWithMetadata<User>>(apiRoutes.USERS.GET_ALL(search, page, limit))
+        const resp = await httpClient.put<ApiResponseWithMetadata<User>>(apiRoutes.USERS.EDIT(userId), dataInput)
         return {
             success: resp
         }

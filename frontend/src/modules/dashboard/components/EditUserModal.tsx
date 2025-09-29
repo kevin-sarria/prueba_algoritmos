@@ -44,10 +44,11 @@ export const EditUserModal = ({ isOpen, setClose }: Props) => {
               </div>
               <TextInput id="name" type="password" placeholder="ej. Jhon Doe" required />
             </div>
-          </div>
 
-          <div>
-            <Button type="submit">Save</Button>
+            <div>
+                <Button type="submit">Save</Button>
+            </div>
+
           </div>
         </ModalBody>
       </Modal>

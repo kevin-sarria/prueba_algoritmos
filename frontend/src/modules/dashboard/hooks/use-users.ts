@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { getAllUsers } from "../services/get-users"
 import type { ErrorModel } from "../../../core/types/http.interface"
+import type { User } from "../types/user.interface"
 
 export const useUsers = () => {
 
@@ -15,15 +16,15 @@ export const useUsers = () => {
         setError(null)
 
 
-        const { success, error } = await getAllUsers()
+        const { success, error } = await getAllUsers({ limit: 10 })
         
         if (success) {
-      setUsers(success);
-    } else if (error) {
-      setError(error);
-    }
+            setUsers(success);
+        } else if (error) {
+            setError(error);
+        }
 
-    setLoading(false);
+        setLoading(false);
 
     }
 
@@ -33,7 +34,7 @@ export const useUsers = () => {
 
     const openDeleteUserModal = () => setModalDeleteUserOpen(true)
     const closeDeleteUserModal = () => setModalDeleteUserOpen(false)
-    const openEditUserModal = () => setModalEditUserOpen(true)
+    const openEditUserModal = () => setModalDeleteUserOpen(true)
     const closeEditUserModal = () => setModalEditUserOpen(false)
 
     return {

@@ -4,21 +4,19 @@ import type { ApiResponseWithMetadata, ErrorModel } from "../../../core/types/ht
 import type { User } from "../types/user.interface";
 
 interface Response {
-    success?: ApiResponseWithMetadata<User>;
+    success?: boolean;
     error?: ErrorModel;
 }
 
 interface Props {
-    search?: string;
-    page?: number;
-    limit?: number
+    userId: string;
 }
 
-export const getAllUsers = async ({ search = '', page, limit }: Props): Promise<Response> => {
+export const deleteUser = async ({ userId }: Props): Promise<Response> => {
     try {
-        const resp = await httpClient.get<ApiResponseWithMetadata<User>>(apiRoutes.USERS.GET_ALL(search, page, limit))
+        await httpClient.delete<ApiResponseWithMetadata<User>>(apiRoutes.USERS.DELETE(userId))
         return {
-            success: resp
+            success: true
         }
     } catch (error: unknown) {
         const errorResponse: ErrorModel = { code: 500, message: "Unknown error" };

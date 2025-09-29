@@ -80,22 +80,22 @@ export const TableUsers = () => {
             </TableRow>
           </TableHead>
           <TableBody className="divide-y">
-            {paginatedData.map((item, index) => (
+            {paginatedData.map((user, index) => (
               <TableRow
                 key={index}
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {item.id}
+                  {user.id}
                 </TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.role}</TableCell>
-                <TableCell>{formatDate(item.created_at)}</TableCell>
-                <TableCell>{formatDate(item.updated_at)}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>{formatDate(user.created_at)}</TableCell>
+                <TableCell>{formatDate(user.updated_at)}</TableCell>
                 <TableCell>
                   <button
-                    onClick={openEditUserModal}
+                    onClick={() => openEditUserModal(user)}
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Edit
@@ -103,7 +103,7 @@ export const TableUsers = () => {
                 </TableCell>
                 <TableCell>
                   <button
-                    onClick={openDeleteUserModal}
+                    onClick={() => openDeleteUserModal(user)}
                     className="font-medium text-red-600 hover:underline dark:text-red-500"
                   >
                     Delete
