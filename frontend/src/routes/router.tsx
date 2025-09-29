@@ -6,7 +6,7 @@ import { ForgotPasswordPage } from "../modules/auth/pages/ForgotPasswordPage";
 import { DashboardLayout } from "../shared/layouts/DashboardLayout";
 import { DashboardPage } from "../modules/dashboard/pages/DashboardPage";
 
-const auth = true
+const auth = false
 
 export const router = createBrowserRouter([
   {
