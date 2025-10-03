@@ -16,6 +16,7 @@ import { formatDate } from "../../../core/utils/format-date";
 import { DeleteUserModal } from "./DeleteUserModal";
 import { useUsersContext } from "../context/useUsersContext";
 import { EditUserModal } from "./EditUserModal";
+import { AddUserModal } from "./AddUserModal";
 
 export const TableUsers = () => {
   const [search, setSearch] = useState("");
@@ -24,12 +25,17 @@ export const TableUsers = () => {
 
   const {
     users,
+    modalAddUserOpen,
+    openAddUserModal,
+    closeAddUserModal,
     modalDeleteUserOpen,
     openDeleteUserModal,
     closeDeleteUserModal,
     modalEditUserOpen,
     openEditUserModal,
     closeEditUserModal,
+    userSelected,
+    isMyAccount
   } = useUsersContext();
 
   // Filtrar Usuarios
@@ -66,7 +72,7 @@ export const TableUsers = () => {
               setCurrentPage(1);
             }}
           />
-          <Button>+ Add User</Button>
+          <Button onClick={openAddUserModal}>+ Add User</Button>
         </div>
       </div>
 
@@ -80,7 +86,7 @@ export const TableUsers = () => {
               <TableHeadCell>Name</TableHeadCell>
               <TableHeadCell>Role</TableHeadCell>
               <TableHeadCell>Created At</TableHeadCell>
-              {/* <TableHeadCell>Updated At</TableHeadCell> */}
+              <TableHeadCell>Updated At</TableHeadCell>
               <TableHeadCell>
                 <span className="sr-only">Edit</span>
               </TableHeadCell>
@@ -102,10 +108,10 @@ export const TableUsers = () => {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.rol}</TableCell>
                 <TableCell>{formatDate(user.createdAt)}</TableCell>
-                {/* <TableCell>{formatDate(user.updated_at)}</TableCell> */}
+                <TableCell>{formatDate(user.updatedAt)}</TableCell>
                 <TableCell>
                   <button
-                    onClick={() => openEditUserModal()}
+                    onClick={() => openEditUserModal(user)}
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Edit
@@ -114,7 +120,8 @@ export const TableUsers = () => {
                 <TableCell>
                   <button
                     onClick={() => openDeleteUserModal()}
-                    className="font-medium text-red-600 hover:underline dark:text-red-500"
+                    className={`font-medium  ${ isMyAccount(user) ? 'text-gray-300 cursor-not-allowed' : 'text-red-600 dark:text-red-500 hover:underline' }`}
+                    disabled={isMyAccount(user)}
                   >
                     Delete
                   </button>
@@ -125,11 +132,13 @@ export const TableUsers = () => {
         </Table>
       </div>
 
+      <AddUserModal isOpen={modalAddUserOpen} setClose={closeAddUserModal} />
+
       <DeleteUserModal
         isOpen={modalDeleteUserOpen}
         setClose={closeDeleteUserModal}
       />
-      <EditUserModal isOpen={modalEditUserOpen} setClose={closeEditUserModal} />
+      <EditUserModal userSelected={userSelected} isOpen={modalEditUserOpen} setClose={closeEditUserModal} />
 
       {totalPages > 1 && (
         <div className="flex justify-end">

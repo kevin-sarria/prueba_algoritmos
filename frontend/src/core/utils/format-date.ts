@@ -5,6 +5,9 @@
  * @returns formatted string
  */
 export function formatDate(date: Date | string): string {
+
+  if( !date ) return "--"
+
   const d = typeof date === "string" ? new Date(date) : date;
 
   const formatted = d.toLocaleDateString("es-ES", {

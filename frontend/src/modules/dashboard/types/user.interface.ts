@@ -9,4 +9,5 @@ export interface User {
     rol:       string;
     active:    boolean;
     createdAt: Date;
+    updatedAt: Date;
 }
