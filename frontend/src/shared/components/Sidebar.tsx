@@ -14,7 +14,7 @@ export const SidebarApp = ({ isOpen, closeNavbar }: Props) => {
         <Sidebar aria-label="Sidebar">
           <SidebarItems>
             <SidebarItemGroup>
-              <SidebarItem href="#" icon={HiChartPie}>
+              <SidebarItem href="/" icon={HiChartPie}>
                 Dashboard
               </SidebarItem>
             </SidebarItemGroup>

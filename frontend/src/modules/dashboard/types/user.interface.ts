@@ -1,8 +1,12 @@
+export interface UserResponse {
+    data: User[];
+}
+
 export interface User {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-  created_at: string;
-  updated_at: string;
+    id:        string;
+    name:    string;
+    email:     string;
+    rol:       string;
+    active:    boolean;
+    createdAt: Date;
 }

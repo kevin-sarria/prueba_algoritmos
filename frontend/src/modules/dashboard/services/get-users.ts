@@ -1,32 +1,25 @@
 import { apiRoutes } from "../../../core/constans/api-routes";
+import { parseAxiosError } from "../../../core/http/errorHandler";
 import { httpClient } from "../../../core/http/httpClient";
-import type { ApiResponseWithMetadata, ErrorModel } from "../../../core/types/http.interface";
+import type { ErrorModel } from "../../../core/types/http.interface";
 import type { User } from "../types/user.interface";
 
 interface Response {
-    success?: ApiResponseWithMetadata<User>;
+    success?: {
+        data: User[]
+    };
     error?: ErrorModel;
 }
 
-interface Props {
-    search?: string;
-    page?: number;
-    limit?: number
-}
-
-export const getAllUsers = async ({ search = '', page, limit }: Props): Promise<Response> => {
+export const getAllUsers = async (): Promise<Response> => {
     try {
-        const resp = await httpClient.get<ApiResponseWithMetadata<User>>(apiRoutes.USERS.GET_ALL(search, page, limit))
+        const data = await httpClient.get<{data: User[]}>(apiRoutes.USERS.GET_ALL())
         return {
-            success: resp
+            success: data
         }
-    } catch (error: unknown) {
-        const errorResponse: ErrorModel = { code: 500, message: "Unknown error" };
-
-        if (error instanceof Error) {
-            errorResponse.message = error.message;
+    } catch (error) {
+        return {
+            error: parseAxiosError(error)
         }
-
-        return { error: errorResponse };
     }
 }

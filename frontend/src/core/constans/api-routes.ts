@@ -1,14 +1,14 @@
 export const apiRoutes = {
     AUTH: {
-        REGISTER: '/auth/register',
-        LOGIN: '/auth/login',
-        REFRESH_TOKEN: '/auth/refresh'
+        REGISTER: '/Auth/Register',
+        LOGIN: '/Auth/Login',
+        REFRESH_TOKEN: '/Auth/Refresh'
     },
     USERS: {
-        GET_ALL: (search?: string, page?: number | string, limit?: number) => `/users?search='${search}'&page=${page}&size=${limit}`,
-        GET_USER: (idUser: string | number) => `/users/${idUser}`,
+        GET_ALL: () => `/Users`,
+        GET_USER: (idUser: string | number) => `/Users/${idUser}`,
         CREATE: '/users',
-        EDIT: (idUser: string | number) => `/users/${idUser}`,
-        DELETE: (idUser: string | number) => `/users/${idUser}`,
+        EDIT: (idUser: string | number) => `/Users/${idUser}`,
+        DELETE: (idUser: string | number) => `/Users/${idUser}`,
     }
 }

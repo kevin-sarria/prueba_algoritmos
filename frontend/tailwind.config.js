@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class",
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}", 
-    "node_modules/flowbite-react/lib/esm/**/*.js", // <- necesario para Flowbite React
+    "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
   theme: {
     extend: {},

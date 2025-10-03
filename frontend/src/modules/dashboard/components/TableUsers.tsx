@@ -14,7 +14,6 @@ import {
 } from "flowbite-react";
 import { formatDate } from "../../../core/utils/format-date";
 import { DeleteUserModal } from "./DeleteUserModal";
-import { users } from "../mocks/usersMock";
 import { useUsersContext } from "../context/useUsersContext";
 import { EditUserModal } from "./EditUserModal";
 
@@ -23,22 +22,33 @@ export const TableUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
-  const data = users;
+  const {
+    users,
+    modalDeleteUserOpen,
+    openDeleteUserModal,
+    closeDeleteUserModal,
+    modalEditUserOpen,
+    openEditUserModal,
+    closeEditUserModal,
+  } = useUsersContext();
 
-  const { modalDeleteUserOpen, openDeleteUserModal, closeDeleteUserModal, modalEditUserOpen, openEditUserModal, closeEditUserModal } = useUsersContext()
-
-  // Filtrar productos
+  // Filtrar Usuarios
   const filteredData = useMemo(() => {
-    return data.data.filter(
-      (item) =>
-        item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.email.toLowerCase().includes(search.toLowerCase())
+  if (users) {
+    return users.data.filter((item) =>
+      (item.name?.toLowerCase() || "").includes(search.toLowerCase()) ||
+      (item.email?.toLowerCase() || "").includes(search.toLowerCase())
     );
-  }, [search]);
+  }
+  return [];
+}, [search, users]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedData = filteredData.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
     <div className="space-y-4 w-full mx-auto">
@@ -65,12 +75,12 @@ export const TableUsers = () => {
         <Table hoverable>
           <TableHead>
             <TableRow>
-              <TableHeadCell>ID</TableHeadCell>
+              <TableHeadCell>#</TableHeadCell>
               <TableHeadCell>Email</TableHeadCell>
               <TableHeadCell>Name</TableHeadCell>
               <TableHeadCell>Role</TableHeadCell>
               <TableHeadCell>Created At</TableHeadCell>
-              <TableHeadCell>Updated At</TableHeadCell>
+              {/* <TableHeadCell>Updated At</TableHeadCell> */}
               <TableHeadCell>
                 <span className="sr-only">Edit</span>
               </TableHeadCell>
@@ -86,16 +96,16 @@ export const TableUsers = () => {
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
               >
                 <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {user.id}
+                  {index + 1}
                 </TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.name}</TableCell>
-                <TableCell>{user.role}</TableCell>
-                <TableCell>{formatDate(user.created_at)}</TableCell>
-                <TableCell>{formatDate(user.updated_at)}</TableCell>
+                <TableCell>{user.rol}</TableCell>
+                <TableCell>{formatDate(user.createdAt)}</TableCell>
+                {/* <TableCell>{formatDate(user.updated_at)}</TableCell> */}
                 <TableCell>
                   <button
-                    onClick={() => openEditUserModal(user)}
+                    onClick={() => openEditUserModal()}
                     className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   >
                     Edit
@@ -103,7 +113,7 @@ export const TableUsers = () => {
                 </TableCell>
                 <TableCell>
                   <button
-                    onClick={() => openDeleteUserModal(user)}
+                    onClick={() => openDeleteUserModal()}
                     className="font-medium text-red-600 hover:underline dark:text-red-500"
                   >
                     Delete
@@ -115,7 +125,10 @@ export const TableUsers = () => {
         </Table>
       </div>
 
-      <DeleteUserModal isOpen={modalDeleteUserOpen} setClose={closeDeleteUserModal} />
+      <DeleteUserModal
+        isOpen={modalDeleteUserOpen}
+        setClose={closeDeleteUserModal}
+      />
       <EditUserModal isOpen={modalEditUserOpen} setClose={closeEditUserModal} />
 
       {totalPages > 1 && (
@@ -132,4 +145,4 @@ export const TableUsers = () => {
       )}
     </div>
   );
-}
+};

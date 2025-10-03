@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { getAllUsers } from "../services/get-users"
 import type { ErrorModel } from "../../../core/types/http.interface"
+import { type UserResponse } from "../types/user.interface"
 
 export const useUsers = () => {
 
     const [ loading, setLoading ] = useState(false)
     const [error, setError] = useState<ErrorModel | null>(null);
-    const [users, setUsers] = useState({})
+    const [users, setUsers] = useState<UserResponse>({ data: [] })
     const [modalEditUserOpen, setModalEditUserOpen] = useState(false)
     const [modalDeleteUserOpen, setModalDeleteUserOpen] = useState(false)
 
@@ -15,7 +16,7 @@ export const useUsers = () => {
         setError(null)
 
 
-        const { success, error } = await getAllUsers({ limit: 10 })
+        const { success, error } = await getAllUsers()
         
         if (success) {
             setUsers(success);
@@ -24,7 +25,6 @@ export const useUsers = () => {
         }
 
         setLoading(false);
-
     }
 
     useEffect( () => {
@@ -33,7 +33,7 @@ export const useUsers = () => {
 
     const openDeleteUserModal = () => setModalDeleteUserOpen(true)
     const closeDeleteUserModal = () => setModalDeleteUserOpen(false)
-    const openEditUserModal = () => setModalDeleteUserOpen(true)
+    const openEditUserModal = () => setModalEditUserOpen(true)
     const closeEditUserModal = () => setModalEditUserOpen(false)
 
     return {

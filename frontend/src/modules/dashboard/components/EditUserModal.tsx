@@ -1,29 +1,35 @@
-
 "use client";
 
-import { Button, Label, Modal, ModalBody, ModalHeader, TextInput } from "flowbite-react";
-import { useFormik } from 'formik';
+import {
+  Button,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  TextInput,
+} from "flowbite-react";
+import { useFormik } from "formik";
 
 interface Props {
-    isOpen: boolean,
-    setClose: () => void
+  isOpen: boolean;
+  setClose: () => void;
 }
 
 export const EditUserModal = ({ isOpen, setClose }: Props) => {
-
-    const { values, handleChange } = useFormik({
-        initialValues: {
-            email: '',
-        },
-        onSubmit: ()  => {
-
-        }
-    })
+  const { values, handleChange } = useFormik({
+    initialValues: {
+      email: "",
+      name: "",
+    },
+    onSubmit: () => {},
+  });
 
   return (
     <>
-      <Modal show={isOpen} size="md" onClose={setClose} popup>
-        <ModalHeader>Edit Modal</ModalHeader>
+      <Modal show={isOpen} size="md" onClose={setClose}>
+        <ModalHeader className="!border-b !border-b-gray-200">
+          Edit Modal
+        </ModalHeader>
         <ModalBody>
           <div className="space-y-6">
             <div>
@@ -42,16 +48,22 @@ export const EditUserModal = ({ isOpen, setClose }: Props) => {
               <div className="mb-2 block">
                 <Label htmlFor="name">Name</Label>
               </div>
-              <TextInput id="name" type="password" placeholder="ej. Jhon Doe" required />
+              <TextInput
+                id="name"
+                type="password"
+                placeholder="ej. Jhon Doe"
+                value={values.name}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div>
-                <Button type="submit">Save</Button>
+              <Button type="submit">Save</Button>
             </div>
-
           </div>
         </ModalBody>
       </Modal>
     </>
   );
-}
+};

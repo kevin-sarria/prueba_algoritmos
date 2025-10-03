@@ -3,8 +3,12 @@
 import { Button, Card, Label, TextInput } from "flowbite-react"
 import { useFormik } from "formik"
 import { loginSchema } from "../schemas/login"
+import { useAuth } from "../hooks/use-auth"
 
 export function LoginForm() {
+  
+  const { handleLogin } = useAuth()
+
   const {
     values,
     handleChange,
@@ -18,8 +22,8 @@ export function LoginForm() {
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: () => {
-      console.log({ values })
+    onSubmit: async() => {
+      await handleLogin(values.email, values.password)
     },
   })
 
@@ -70,7 +74,7 @@ export function LoginForm() {
         </div>
 
         <div className="flex flex-col space-y-4 mt-4">
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full cursor-pointer">
             Login
           </Button>
 
@@ -84,12 +88,6 @@ export function LoginForm() {
                 Create Account
               </a>
             </p>
-            <a
-              href="/forgot-password"
-              className="text-sm text-muted-foreground hover:text-primary hover:underline"
-            >
-              Forgot your password?
-            </a>
           </div>
         </div>
       </form>

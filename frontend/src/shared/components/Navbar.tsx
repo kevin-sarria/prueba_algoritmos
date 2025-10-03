@@ -7,12 +7,24 @@ import {
   Navbar,
 } from "flowbite-react";
 import { HiMenu } from "react-icons/hi";
+import { useAppDispatch, useAppSelector } from "../../core/state/hooks";
+import { resetUser } from "../../core/state/slices/app-slice";
 
 interface Props {
     openNavbar: () => void
 }
 
 export const NavbarApp = ({ openNavbar }: Props) => {
+
+  const { user } = useAppSelector( state => state.app )
+
+  const dispatch = useAppDispatch()
+
+  const logout = () => {
+    dispatch(resetUser())
+    localStorage.removeItem("token")
+  }
+
   return (
     <Navbar fluid rounded className="w-full">
       <div className="w-full flex items-center justify-between">
@@ -39,14 +51,14 @@ export const NavbarApp = ({ openNavbar }: Props) => {
             }
           >
             <DropdownHeader>
-              <span className="block text-sm">Juan Pérez</span>
+              <span className="block text-sm">{ user?.name }</span>
               <span className="block truncate text-sm font-medium">
-                juan@example.com
+                { user?.email }
               </span>
             </DropdownHeader>
             <DropdownItem>Profile</DropdownItem>
             <DropdownDivider />
-            <DropdownItem>Sign out</DropdownItem>
+            <DropdownItem onClick={logout}>Sign out</DropdownItem>
           </Dropdown>
         </div>
       </div>

@@ -1,23 +1,33 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { LoginPage } from "../modules/auth/pages/LoginPage";
 import { AuthLayout } from "../shared/layouts/AuthLayout";
 import { RegisterPage } from "../modules/auth/pages/RegisterPage";
 import { ForgotPasswordPage } from "../modules/auth/pages/ForgotPasswordPage";
 import { DashboardLayout } from "../shared/layouts/DashboardLayout";
 import { DashboardPage } from "../modules/dashboard/pages/DashboardPage";
+import { useAppSelector } from "../core/state/hooks";
+import { useAuthInitializer } from "../modules/auth/hooks/use-auth-initializer";
+import { Loader } from "../shared/Loader";
 
-const auth = false
+export const AppRouter = () => {
+  useAuthInitializer()
+  const { isAuthenticated, isLoading } = useAppSelector(state => state.app);
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: auth ? <DashboardLayout /> : <AuthLayout />,
-    children: auth ? [
-      { index: true, element: <DashboardPage /> }
-    ] : [
-      { index: true, element: <LoginPage /> },
-      { path: "register", element: <RegisterPage /> },
-      { path: "forgot-password", element: <ForgotPasswordPage /> },
-    ],
-  },
-]);
+  if( isLoading ) return <Loader />
+
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: isAuthenticated ? <DashboardLayout /> : <AuthLayout />,
+      children: isAuthenticated
+        ? [{ index: true, element: <DashboardPage /> }]
+        : [
+            { index: true, element: <LoginPage /> },
+            { path: 'register', element: <RegisterPage /> },
+            { path: 'forgot-password', element: <ForgotPasswordPage /> },
+          ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
+};

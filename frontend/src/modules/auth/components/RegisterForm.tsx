@@ -3,8 +3,12 @@
 import { Button, Card, Label, TextInput } from "flowbite-react"
 import { useFormik } from "formik"
 import { registerSchema } from "../schemas/register"
+import { useAuth } from "../hooks/use-auth"
 
 export const RegisterForm = () => {
+
+  const { handleRegister } = useAuth()
+
   const {
     values,
     handleChange,
@@ -20,8 +24,8 @@ export const RegisterForm = () => {
       repeat_password: "",
     },
     validationSchema: registerSchema,
-    onSubmit: (values) => {
-      console.log("Form submitted:", values)
+    onSubmit: async() => {
+      await handleRegister(values.name, values.email, values.password)
     },
   })
 
@@ -122,7 +126,7 @@ export const RegisterForm = () => {
             )}
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full cursor-pointer">
             Create Account
           </Button>
         </form>
