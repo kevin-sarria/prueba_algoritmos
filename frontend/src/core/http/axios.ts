@@ -1,6 +1,4 @@
-import axios, { type AxiosInstance } from "axios"
-
-const token = localStorage.getItem("token")
+import axios, { type AxiosInstance } from "axios";
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -8,8 +6,7 @@ const apiClient: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "Authorization": `Bearer ${token}`
   },
-})
+});
 
-export default apiClient
+export default apiClient;

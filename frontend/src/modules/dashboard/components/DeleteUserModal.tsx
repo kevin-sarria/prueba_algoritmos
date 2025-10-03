@@ -5,11 +5,16 @@ import { Button, Modal, ModalBody, ModalHeader } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 interface Props {
+    userSelectedId: string
     isOpen: boolean
     setClose: () => void
 }
 
-export const DeleteUserModal = ({ isOpen, setClose }: Props) => {
+export const DeleteUserModal = ({ userSelectedId, isOpen, setClose }: Props) => {
+
+  const handleDelete = () => { 
+    
+  }
 
   return (
     <>

@@ -3,6 +3,7 @@ import { getAllUsers } from "../services/get-users"
 import type { ErrorModel } from "../../../core/types/http.interface"
 import { type User, type UserResponse } from "../types/user.interface"
 import { useAppSelector } from "../../../core/state/hooks"
+import { editUser } from "../services/edit-user"
 
 export const useUsers = () => {
 
@@ -51,6 +52,21 @@ export const useUsers = () => {
     const openDeleteUserModal = () => setModalDeleteUserOpen(true)
     const closeDeleteUserModal = () => setModalDeleteUserOpen(false)
 
+    const handleAddUser = () => {
+    }
+
+    const handleUpdateUser = async (user: User) => {
+    const { success, error } = await editUser({ userId: user?.id, dataInput: user })
+
+    if (error) return setError(error)
+
+    // Solo retornamos los datos formateados para usar en la tabla
+    return success?.data
+}
+
+    const handleDeleteUser = () => {
+    }
+
     return {
         loading,
         reload: loadUsers,
@@ -66,6 +82,8 @@ export const useUsers = () => {
         modalEditUserOpen,
         openEditUserModal,
         closeEditUserModal,
-        isMyAccount
+        isMyAccount,
+        handleUpdateUser,
+
     }
 }

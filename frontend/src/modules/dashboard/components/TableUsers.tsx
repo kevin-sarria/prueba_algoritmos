@@ -137,6 +137,7 @@ export const TableUsers = () => {
       <DeleteUserModal
         isOpen={modalDeleteUserOpen}
         setClose={closeDeleteUserModal}
+        // userSelectedId={userSelected?.id}
       />
       <EditUserModal userSelected={userSelected} isOpen={modalEditUserOpen} setClose={closeEditUserModal} />
 

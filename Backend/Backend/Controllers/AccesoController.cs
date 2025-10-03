@@ -25,12 +25,18 @@ namespace Backend.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register(UsuarioDTO objeto)
         {
+
+            var currentTime = DateTime.UtcNow;
+
             var userModel = new User
             {
                 Id = Guid.NewGuid(),
                 Name = objeto.Name,
                 Email = objeto.Email,
-                PasswordHash = _utilidades.encriptarSHA256(objeto.Password)
+                PasswordHash = _utilidades.encriptarSHA256(objeto.Password),
+                IsActive = true,
+                CreatedAt = currentTime,
+                UpdatedAt = currentTime
             };
 
             await _dbContext.Users.AddAsync(userModel);
